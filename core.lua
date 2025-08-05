@@ -21,6 +21,27 @@ local function count_lines(_,pos, parser_state)
 	return pos
 end
 
+function deepcopy(object)
+	local lookup_table = {}
+	local function _copy(obj)
+		if type(obj) ~= "table" then
+			return obj
+		elseif lookup_table[obj] then
+			return lookup_table[obj]
+		end
+
+		local new_table = {}
+		lookup_table[obj] = new_table
+		for key, value in pairs(obj) do
+			new_table[_copy(key)] = _copy(value)
+		end
+
+		return setmetatable(new_table, getmetatable(obj))
+	end
+
+	return _copy(object)
+end
+
 
 local color = {
 	red = 31,
@@ -311,15 +332,15 @@ local function flattypename(r)
 							highlight_type(fullname), tostring(f.meta)))
 					end
 					f.map = true -- 兼容spb
-					f.map_keyfield = map_key
-					f.map_valuefield = map_value
+					f.map_keyfield = deepcopy(map_key)
+					f.map_valuefield = deepcopy(map_value)
 				else
 					local reason = "Invalid map index: "..highlight_tag(key)..tostring(f.meta)
 					for _,v in ipairs(vtype) do
 						if v.name == key and buildin_types[v.typename] then
 							f.key=v.name
-							f.map_keyfield = v
-							f.map_valuefield = f
+							f.map_keyfield = deepcopy(v)
+							f.map_valuefield = deepcopy(f)
 							reason = false
 							break
 						end
