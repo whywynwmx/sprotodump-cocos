@@ -1,8 +1,8 @@
 local M = {}
 
 function M.path_basename(string_)
-  local LUA_DIRSEP = string.sub(package.config,1,1)
-  string_ = string_ or ''
+  -- local LUA_DIRSEP = string.sub(package.config,1,1)
+  local LUA_DIRSEP = "/"
   local basename = string.gsub (string_, '[^'.. LUA_DIRSEP ..']*'.. LUA_DIRSEP ..'', '')
   basename = string.gsub(basename, "(.+)%..+$", "%1")
   return basename
