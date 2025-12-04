@@ -48,7 +48,7 @@ def _SingleDump(moduleName, excludeNames):
 				continue
 			protoFiles.append(inDir + fileName)
 
-	os.system("lua.exe sprotodump.lua -ts {0} -d {1} -p {2}".format(" ".join(protoFiles), outDir, moduleName))
+	os.system(".\lua\lua.exe sprotodump.lua -ts {0} -d {1} -p {2}".format(" ".join(protoFiles), outDir, moduleName))
 
 def _Dump(moduleNames):
 	for i, moduleName in enumerate(moduleNames):
